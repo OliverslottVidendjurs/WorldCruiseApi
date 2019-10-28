@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var app = express();
 let port = 3001;
 if (process.env.NODE_ENV === 'prod') {
-    port = 80;
+    port = process.env.port || process.env.PORT || 1337;
 }
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
