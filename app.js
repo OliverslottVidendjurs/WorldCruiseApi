@@ -1,7 +1,10 @@
 var express = require('express')
 var bodyParser = require('body-parser');
 var app = express();
-const port = 3001;
+let port = 3001;
+if (process.env.NODE_ENV === 'prod') {
+    port = 80;
+}
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
