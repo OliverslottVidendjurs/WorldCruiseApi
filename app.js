@@ -88,7 +88,6 @@ app.get("/butik/:id", function(req, res){
     });
 });
 
-<<<<<<< HEAD
 app.post("/administrator/opret", function(req, res) {
     const collection = db.collection("Administrator");
     collection.insertOne({
@@ -100,7 +99,6 @@ app.post("/administrator/opret", function(req, res) {
 });
 
 
-=======
 //does delete, but does not redirect back
 app.get("/butik/:id/slet", function(req, res){
     const collection = db.collection("Butik");
@@ -110,7 +108,6 @@ app.get("/butik/:id/slet", function(req, res){
     });
 });
 
->>>>>>> 0b1b8236dcde84ecc96723ad75f8c54a2b4ad689
 app.post("/butik/opret", function(req, res){
     const collection = db.collection("Butik");
     collection.insertOne({
