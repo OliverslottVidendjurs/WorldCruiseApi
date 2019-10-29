@@ -60,6 +60,15 @@ app.get("/butik/:id", function(req, res){
     });
 });
 
+//does delete, but does not redirect back
+app.get("/butik/:id/slet", function(req, res){
+    const collection = db.collection("Butik");
+    let cursor = collection.deleteOne({_id: new mongodb.ObjectID(req.params.id)});
+    cursor.toArray().then(content => {
+        res.send(content);
+    });
+});
+
 app.post("/butik/opret", function(req, res){
     const collection = db.collection("Butik");
     collection.insertOne({
