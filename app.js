@@ -54,6 +54,13 @@ app.get("/bruger/hent/:id", function(req, res){
     });
 });
 
+app.post("/bruger/edit/:id", function(req, res){
+    BrugerModel.findOneAndUpdate({_id: req.params.id}, req.body, function(err, bruger){
+        res.send();
+    });
+});
+
+
 //Bruger End
 
 //Administrator Start
