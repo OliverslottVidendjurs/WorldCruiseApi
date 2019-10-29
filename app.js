@@ -21,7 +21,9 @@ client.connect(err => {
     db = client.db("WorldCruise");
 });
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/', (req, res) => res.send('Hello World!'));
+
+//Bruger Start
 
 app.get("/bruger", function(req, res){    
     const collection = db.collection("Bruger");
@@ -64,6 +66,10 @@ app.get("/bruger/hent/:id", function(req, res){
     });
 });
 
+//Bruger End
+
+//Administrator Start
+
 app.get("/administrator", function(req, res){
     const collection = db.collection("Administrator");
     let cursor = collection.find({});
@@ -71,6 +77,20 @@ app.get("/administrator", function(req, res){
         res.send(content);
     });
 });
+
+app.post("/administrator/opret", function(req, res) {
+    const collection = db.collection("Administrator");
+    collection.insertOne({
+        Navn: req.body.Navn,
+        Kodeord: req.body.Kodeord
+    }, function(){
+        res.send(); //Ok
+    });
+});
+
+//Administrator End
+
+//Butik Start
 
 app.get("/butik", function(req, res){
     const collection = db.collection("Butik");
@@ -85,16 +105,6 @@ app.get("/butik/:id", function(req, res){
     let cursor = collection.find({_id: new mongodb.ObjectID(req.params.id)});
     cursor.toArray().then(content => {
         res.send(content);
-    });
-});
-
-app.post("/administrator/opret", function(req, res) {
-    const collection = db.collection("Administrator");
-    collection.insertOne({
-        Navn: req.body.Navn,
-        Kodeord: req.body.Kodeord
-    }, function(){
-        res.send(); //Ok
     });
 });
 
@@ -123,5 +133,24 @@ app.post("/butik/opret", function(req, res){
         res.send();
     });
 });
+
+app.post("/butik/edit/:id", function(req, res){
+    const collection = db.collection("Butik");
+    collection.update({
+        _id: new mongodb.ObjectID(req.params.id)
+    },{
+        Logo: req.body.Logo,
+        Navn: req.body.Navn,
+        Adresse: req.body.Adresse,
+        Telefon: req.body.Telefon,
+        Kodeord: req.body.Kodeord,
+        Details: req.body.Details,
+        KontaktOplysninger: req.body.KontaktOplysninger
+    }, function(){
+        res.send();
+    });
+});
+
+//Butik End
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
