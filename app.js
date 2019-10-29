@@ -1,4 +1,5 @@
-var express = require('express')
+var express = require('express');
+var cors = require("cors");
 var bodyParser = require('body-parser');
 var app = express();
 let port = 3001;
@@ -7,6 +8,7 @@ if (process.env.NODE_ENV === 'prod') {
 }
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(cors());
 
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
@@ -70,6 +72,22 @@ app.get("/administrator", function(req, res){
     });
 });
 
+app.get("/butik", function(req, res){
+    const collection = db.collection("Butik");
+    let cursor = collection.find({});
+    cursor.toArray().then(content => {
+        res.send(content);
+    });
+});
+
+app.get("/butik/:id", function(req, res){
+    const collection = db.collection("Butik");
+    let cursor = collection.find({_id: new mongodb.ObjectID(req.params.id)});
+    cursor.toArray().then(content => {
+        res.send(content);
+    });
+});
+
 app.post("/administrator/opret", function(req, res) {
     const collection = db.collection("Administrator");
     collection.insertOne({
@@ -80,5 +98,20 @@ app.post("/administrator/opret", function(req, res) {
     });
 });
 
+
+app.post("/butik/opret", function(req, res){
+    const collection = db.collection("Butik");
+    collection.insertOne({
+        Logo: req.body.Logo,
+        Navn: req.body.Navn,
+        Adresse: req.body.Adresse,
+        Telefon: req.body.Telefon,
+        Kodeord: req.body.Kodeord,
+        Details: req.body.Details,
+        KontaktOplysninger: req.body.KontaktOplysninger
+    }, function(){
+        res.send();
+    });
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
