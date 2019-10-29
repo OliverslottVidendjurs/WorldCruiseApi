@@ -8,7 +8,8 @@ if (process.env.NODE_ENV === 'prod') {
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-const MongoClient = require('mongodb').MongoClient;
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
 const uri = "mongodb+srv://Oliver:RME4gUT1U8xaOpMH@cluster0-juyfc.azure.mongodb.net/test?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 let db;
@@ -46,6 +47,14 @@ app.post("/bruger/opret", function(req, res){
 app.get("/butik", function(req, res){
     const collection = db.collection("Butik");
     let cursor = collection.find({});
+    cursor.toArray().then(content => {
+        res.send(content);
+    });
+});
+
+app.get("/butik/:id", function(req, res){
+    const collection = db.collection("Butik");
+    let cursor = collection.find({_id: new mongodb.ObjectID(req.params.id)});
     cursor.toArray().then(content => {
         res.send(content);
     });
