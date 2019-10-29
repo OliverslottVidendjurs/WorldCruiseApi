@@ -22,12 +22,9 @@ app.get('/', (req, res) => res.send('Hello World!'))
 
 app.get("/bruger", function(req, res){    
     const collection = db.collection("Bruger");
-    collection.findOne({}, function(err, doc){
-        if(err){
-
-        } else {
-            res.send(doc);
-        }
+    let cursor = collection.find({});
+    cursor.toArray().then(content => {
+        res.send(content);
     });
 });
 
