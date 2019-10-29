@@ -8,7 +8,8 @@ if (process.env.NODE_ENV === 'prod') {
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-const MongoClient = require('mongodb').MongoClient;
+const mongodb = require("mongodb");
+const MongoClient = mongodb.MongoClient;
 const uri = "mongodb+srv://Oliver:RME4gUT1U8xaOpMH@cluster0-juyfc.azure.mongodb.net/test?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 let db;
@@ -42,5 +43,42 @@ app.post("/bruger/opret", function(req, res){
         res.send(); //200 ok?
     });
 });
+
+app.post("/bruger/slet/:id", function(req, res){
+    const collection = db.collection("Bruger");
+    collection.deleteOne({
+        _id: new mongodb.ObjectID(req.params.id)
+    });
+    res.send(); //Ok
+});
+
+app.get("/bruger/hent/:id", function(req, res){
+    const collection = db.collection("Bruger");
+    let cursor = collection.find({
+        _id: new mongodb.ObjectID(req.params.id)
+    });
+    cursor.toArray().then(content => {
+        res.send(content); //Ok
+    });
+});
+
+app.get("/administrator", function(req, res){
+    const collection = db.collection("Administrator");
+    let cursor = collection.find({});
+    cursor.toArray().then(content => {
+        res.send(content);
+    });
+});
+
+app.post("/administrator/opret", function(req, res) {
+    const collection = db.collection("Administrator");
+    collection.insertOne({
+        Navn: req.body.Navn,
+        Kodeord: req.body.Kodeord
+    }, function(){
+        res.send(); //Ok
+    });
+});
+
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
