@@ -43,4 +43,27 @@ app.post("/bruger/opret", function(req, res){
     });
 });
 
+app.get("/butik", function(req, res){
+    const collection = db.collection("Butik");
+    let cursor = collection.find({});
+    cursor.toArray().then(content => {
+        res.send(content);
+    });
+});
+
+app.post("/butik/opret", function(req, res){
+    const collection = db.collection("Butik");
+    collection.insertOne({
+        Logo: req.body.Logo,
+        Navn: req.body.Navn,
+        Adresse: req.body.Adresse,
+        Telefon: req.body.Telefon,
+        Kodeord: req.body.Kodeord,
+        Details: req.body.Details,
+        KontaktOplysninger: req.body.KontaktOplysninger
+    }, function(){
+        res.send();
+    });
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
