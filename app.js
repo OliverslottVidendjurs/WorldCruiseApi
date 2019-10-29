@@ -100,11 +100,12 @@ app.post("/administrator/opret", function(req, res) {
 
 
 //does delete, but does not redirect back
-app.get("/butik/:id/slet", function(req, res){
+app.post("/butik/slet/:id", function(req, res){
     const collection = db.collection("Butik");
-    let cursor = collection.deleteOne({_id: new mongodb.ObjectID(req.params.id)});
-    cursor.toArray().then(content => {
-        res.send(content);
+    collection.deleteOne({
+        _id: new mongodb.ObjectID(req.params.id)
+    }, function(){
+        res.send(); //Ok
     });
 });
 
