@@ -63,8 +63,12 @@ app.post("/bruger/edit/:id", function(req, res){
 
 app.post("/bruger/login", function(req, res){
     BrugerModel.findOne({Email: req.body.Email}, function(err, bruger){
-        if(bruger.Kodeord == req.body.Kodeord){
-            res.send(bruger.id);
+        if(bruger) {
+            if(bruger.Kodeord == req.body.Kodeord){
+                res.send(bruger.id);
+            } else {            
+                res.status(400).send("Wrong email or password!");
+            }
         } else {            
             res.status(400).send("Wrong email or password!");
         }
