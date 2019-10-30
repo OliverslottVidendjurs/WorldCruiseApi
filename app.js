@@ -99,9 +99,13 @@ app.post("/administrator/opret", function(req, res) {
 
 app.post("/administrator/login", function(req, res){
     AdminModel.findOne({Navn: req.body.Navn}, function(err, admin){
-        if(admin.Kodeord == req.body.Kodeord){
-            res.send(admin.id);
-        } else {            
+        if(admin){
+            if(admin.Kodeord == req.body.Kodeord){
+                res.send(admin.id);
+            } else {            
+                res.status(400).send("Wrong email or password!");
+            }
+        } else {
             res.status(400).send("Wrong email or password!");
         }
     });
@@ -163,9 +167,13 @@ app.post("/butik/edit/:id", function(req, res){
 
 app.post("/butik/login", function(req, res){
     AdminModel.findOne({Navn: req.body.Navn}, function(err, admin){
-        if(admin.Kodeord == req.body.Kodeord){
-            res.send(admin.id);
-        } else {            
+        if(admin){
+            if(admin.Kodeord == req.body.Kodeord){
+                res.send(admin.id);
+            } else {            
+                res.status(400).send("Wrong email or password!");
+            }
+        } else {
             res.status(400).send("Wrong email or password!");
         }
     });
