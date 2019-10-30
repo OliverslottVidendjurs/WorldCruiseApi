@@ -26,7 +26,8 @@ let BrugerSchema = new Schema({
     Kodeord: String,
     Nationalitet: String,
     Penge: String,
-    Aktiv: Boolean
+    Aktiv: Boolean,
+    Kode: String
 });
 let BrugerModel = mongoose.model("Bruger", BrugerSchema, "Bruger");
 
@@ -92,6 +93,16 @@ app.post("/administrator/opret", function(req, res) {
     });
 });
 
+app.post("/administrator/login", function(req, res){
+    AdminModel.findOne({Navn: req.body.Navn}, function(err, admin){
+        if(admin.Kodeord == req.body.Kodeord){
+            res.send(admin.id);
+        } else {            
+            res.status(400).send("Wrong email or password!");
+        }
+    });
+});
+
 //Administrator End
 
 //Butik Start
@@ -103,7 +114,10 @@ let ButikSchema = new Schema({
     Telefon: String,
     Kodeord: String,
     Details: String,
-    KontaktOplysninger: String
+    KontaktOplysninger: String,
+    Aktiv: Boolean,
+    Kode: String,
+    Email: String
 });
 let ButikModel = mongoose.model("Butik", ButikSchema, "Butik");
 
@@ -139,6 +153,16 @@ app.post("/butik/edit/:id", function(req, res){
         _id: req.params.id
     }, req.body, {}, function(err, doc){
         res.send(); //Ok
+    });
+});
+
+app.post("/butik/login", function(req, res){
+    AdminModel.findOne({Navn: req.body.Navn}, function(err, admin){
+        if(admin.Kodeord == req.body.Kodeord){
+            res.send(admin.id);
+        } else {            
+            res.status(400).send("Wrong email or password!");
+        }
     });
 });
 
