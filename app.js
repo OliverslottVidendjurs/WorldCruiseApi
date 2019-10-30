@@ -118,7 +118,7 @@ let ButikSchema = new Schema({
     Aktiv: Boolean,
     Kode: String,
     Email: String,
-    belob: String
+    Belob: String
 });
 let ButikModel = mongoose.model("Butik", ButikSchema, "Butik");
 
