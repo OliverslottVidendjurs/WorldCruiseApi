@@ -50,7 +50,7 @@ app.post("/bruger/slet/:id", function(req, res){
 });
 
 app.get("/bruger/hent/:id", function(req, res){
-    BrugerModel.find({_id: req.params.id}, function(err, bruger){
+    BrugerModel.findById(req.params.id, function(err, bruger){
         res.send(bruger);
     });
 });
